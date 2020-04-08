@@ -1,31 +1,20 @@
 from par_ou_impar import jogar
 from typing import Callable
 from time import sleep
-from magatest.mock import MagicMock
+from magatest.mock import MagicMock, patch
 import par_ou_impar
-
-
-class RandIntMock:
-    def __init__(self, func: Callable):
-        self._func = func
-
-    def __enter__(self):
-        self._old_func = par_ou_impar.randint
-        par_ou_impar.randint = self._func
-
-    def __exit__(self, exc_type, exc, stacktrace):
-        par_ou_impar.randint = self._old_func
+from unittest import mock as unittest_mock
 
 
 def test_par_ou_impar_should_win_when_result_is_even():
-    randint_magic_mock = MagicMock()
-    randint_magic_mock.return_value = 2
     
-    with RandIntMock(randint_magic_mock):
+    with patch('par_ou_impar.randint', return_value=2):
         assert jogar('par', 2)
 
 def test_par_ou_impar_should_lose_when_result_is_even():
-    with RandIntMock(lambda x, y: 3):
+
+    with patch('par_ou_impar.randint') as mock:
+        mock.return_value = 3
         assert not jogar('par', 2)
 
 def test_magic_mock_instance():
@@ -34,3 +23,11 @@ def test_magic_mock_instance():
     soma_mock = mock.soma
     assert isinstance(soma_mock, MagicMock)
     assert soma_mock is mock.soma
+
+
+def test_jogador():
+    with unittest_mock.patch(
+        'par_ou_impar.Jogador.jogou', 
+        return_value=False
+    ):
+        assert not par_ou_impar.jogador_jogou()

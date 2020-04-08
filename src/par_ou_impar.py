@@ -1,5 +1,15 @@
 from random import randint
 
+
+class Jogador:
+    def jogou(self):
+        return True
+
+
+def jogador_jogou() -> bool:
+    return Jogador().jogou()
+
+
 def jogar(opcao: str, numero:int) -> bool:
     numero_do_computador = randint(0, 10)
 
