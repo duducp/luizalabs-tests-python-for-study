@@ -1,21 +1,21 @@
 from par_ou_impar import jogar
 from typing import Callable
 from time import sleep
-from magatest.mock import MagicMock, patch
+from magatest.mock import MagicMock, patch, parametrize
 import par_ou_impar
 from unittest import mock as unittest_mock
 
 
-def test_par_ou_impar_should_win_when_result_is_even():
-    
+@parametrize('choice,value', [
+    ('par', 2),
+    ('impar', 3),
+    ('par', 4),
+    ('impar', 5),
+])
+def test_par_ou_impar_should_win(choice, value):
     with patch('par_ou_impar.randint', return_value=2):
-        assert jogar('par', 2)
+        assert jogar(choice, value)
 
-def test_par_ou_impar_should_lose_when_result_is_even():
-
-    with patch('par_ou_impar.randint') as mock:
-        mock.return_value = 3
-        assert not jogar('par', 2)
 
 def test_magic_mock_instance():
     mock = MagicMock()

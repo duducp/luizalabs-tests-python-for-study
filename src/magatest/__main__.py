@@ -27,7 +27,7 @@ def import_tests():
                             print(
                                 f'\033[92m Test {item} passed =D'
                             )
-                        except Exception as exc:
+                        except Exception:
                             print('\033[93m')
                             print(f'Test {item} failed =(')
                             print('\033[91m')

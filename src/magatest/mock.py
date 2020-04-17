@@ -1,6 +1,7 @@
 from contextlib import contextmanager
+from functools import wraps
 import importlib
-
+import inspect
 
 
 class MagicMock():
@@ -64,3 +65,55 @@ def test_par_ou_impar_should_lose_when_result_is_even():
         randint_mock.return_value = 3
         assert not jogar('par', 2)
 """
+
+
+"""
+
+@parametrize('parametro,parametro2', 
+    [(param1, param2)]
+)
+def test_caso_de_teste(parametro1, parametro2):
+    ...
+"""
+
+
+def parametrize(parameters, values):
+
+    def callable(func):
+        @wraps(func)
+
+        def wrapper(*args, **kwargs):
+            parameters_list = [
+                parameter.strip()
+                for parameter in parameters.split(',')
+            ]
+            metadata = inspect.signature(func)
+            metadata_parameters = [*metadata.parameters.keys()]
+            if not set(parameters_list).issubset(set(metadata_parameters)):  # a, b, c => b, c é um subconjunto de a, b, c
+                raise AttributeError(
+                    'The attributes list is not equal to the function parameters, '
+                    f'{metadata_parameters} != {parameters_list}'
+                )
+
+            for value in values:
+                if len(parameters_list) != len(value):
+                    raise AttributeError(
+                        'The parameters entered did not match the values '
+                        f'{parameters_list} != {value}'
+                    )
+
+                parameters_dict = {
+                    k: v for k, v in zip(parameters_list, value)
+                }
+
+                try:
+                    func(*args, **{**kwargs, **parameters_dict})
+                except:
+                    print('\033[93m')
+                    print(f'Broke with {value} values :(')
+                    print('\033[91m')
+                    raise
+    
+        return wrapper
+
+    return callable
