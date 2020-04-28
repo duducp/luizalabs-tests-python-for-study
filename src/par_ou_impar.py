@@ -1,4 +1,4 @@
-from random import randint
+import random
 
 
 class Jogador:
@@ -10,8 +10,8 @@ def jogador_jogou() -> bool:
     return Jogador().jogou()
 
 
-def jogar(opcao: str, numero:int) -> bool:
-    numero_do_computador = randint(0, 10)
+def jogar(opcao: str, numero: int) -> bool:
+    numero_do_computador = random.randint(0, 10)
 
     total = numero + numero_do_computador
 

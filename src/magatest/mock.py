@@ -7,6 +7,7 @@ import inspect
 class MagicMock():
 
     def __init__(self, return_value=None):
+        self.call_count = 0
         self.return_value = return_value
 
     @property
@@ -18,12 +19,16 @@ class MagicMock():
         self._return_value = value
 
     def __call__(self, *args, **kwargs):
+        self.call_count += 1
         return self.return_value
 
     def __getattr__(self, name_attribute):
         obj = MagicMock()
         setattr(self, name_attribute, obj)
         return obj
+
+    def assert_called(self, value: int = 1):
+        assert self.call_count == value, f'Mock not called {value} time(s), called {self.call_count} time(s)'
 
 
 @contextmanager
@@ -52,32 +57,30 @@ def patch(
 
 
 
-"""
-import mock
-
-def test_par_ou_impar_should_lose_when_result_is_even():
-    # randint_magic_mock = MagicMock()
-    # randint_magic_mock.return_value = 3
-
-    # with RandIntMock(randint_magic_mock):
-
-    with mock.patch('par_ou_impar.randint') as randint_mock:
-        randint_mock.return_value = 3
-        assert not jogar('par', 2)
-"""
-
-
-"""
-
-@parametrize('parametro,parametro2', 
-    [(param1, param2)]
-)
-def test_caso_de_teste(parametro1, parametro2):
-    ...
-"""
-
-
 def parametrize(parameters, values):
+    """
+    import mock
+
+    def test_par_ou_impar_should_lose_when_result_is_even():
+        # randint_magic_mock = MagicMock()
+        # randint_magic_mock.return_value = 3
+
+        # with RandIntMock(randint_magic_mock):
+
+        with mock.patch('par_ou_impar.randint') as randint_mock:
+            randint_mock.return_value = 3
+            assert not jogar('par', 2)
+    """
+
+
+    """
+
+    @parametrize('parametro,parametro2', 
+        [(param1, param2)]
+    )
+    def test_caso_de_teste(parametro1, parametro2):
+        ...
+    """
 
     def callable(func):
         @wraps(func)

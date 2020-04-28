@@ -13,8 +13,12 @@ from unittest import mock as unittest_mock
     ('impar', 5),
 ])
 def test_par_ou_impar_should_win(choice, value):
-    with patch('par_ou_impar.randint', return_value=2):
+    with patch('par_ou_impar.random') as mock_random:
+        mock_random.randint.return_value = 2
+
         assert jogar(choice, value)
+        assert mock_random.randint.call_count == 1
+        mock_random.randint.assert_called()
 
 
 def test_magic_mock_instance():
