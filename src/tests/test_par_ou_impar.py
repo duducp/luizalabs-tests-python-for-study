@@ -19,6 +19,7 @@ def test_par_ou_impar_should_win(choice, value):
         assert jogar(choice, value)
         assert mock_random.randint.call_count == 1
         mock_random.randint.assert_called()
+        mock_random.randint.assert_called_with(0, b=10)
 
 
 def test_magic_mock_instance():

@@ -11,7 +11,7 @@ def jogador_jogou() -> bool:
 
 
 def jogar(opcao: str, numero: int) -> bool:
-    numero_do_computador = random.randint(0, 10)
+    numero_do_computador = random.randint(0, b=10)
 
     total = numero + numero_do_computador
 

@@ -8,6 +8,7 @@ class MagicMock():
 
     def __init__(self, return_value=None):
         self.call_count = 0
+        self.calls = []
         self.return_value = return_value
 
     @property
@@ -20,6 +21,9 @@ class MagicMock():
 
     def __call__(self, *args, **kwargs):
         self.call_count += 1
+        self.calls.append(
+            (args, kwargs)
+        )
         return self.return_value
 
     def __getattr__(self, name_attribute):
@@ -28,7 +32,13 @@ class MagicMock():
         return obj
 
     def assert_called(self, value: int = 1):
-        assert self.call_count == value, f'Mock not called {value} time(s), called {self.call_count} time(s)'
+        error_message = f'Mock not called {value} time(s), called {self.call_count} time(s)'
+        assert self.call_count == value, error_message
+
+    def assert_called_with(self, *args, **kwargs):
+        call = (args, kwargs)
+        if call not in self.calls:
+            raise AssertionError(f'Not called with {call}')
 
 
 @contextmanager
