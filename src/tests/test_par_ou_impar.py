@@ -21,8 +21,11 @@ def test_magic_mock_instance():
     mock = MagicMock()
 
     soma_mock = mock.soma
+    soma_mock.value = 2
+
     assert isinstance(soma_mock, MagicMock)
     assert soma_mock is mock.soma
+    assert soma_mock.value == 2
 
 
 def test_jogador():

@@ -1,11 +1,14 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### VisualStudioCode template
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+
+.idea
 
 ### Python template
 # Byte-compiled / optimized / DLL files

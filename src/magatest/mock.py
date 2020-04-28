@@ -20,9 +20,9 @@ class MagicMock():
     def __call__(self, *args, **kwargs):
         return self.return_value
 
-    def __getattr__(self, nome_atributo):
+    def __getattr__(self, name_attribute):
         obj = MagicMock()
-        self.__dict__[nome_atributo] = obj
+        setattr(self, name_attribute, obj)
         return obj
 
 
